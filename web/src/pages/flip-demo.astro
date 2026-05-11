@@ -19,16 +19,7 @@ const math = {
 
 <Layout title="수학 디지털 교과서 - 플립북 데모">
     <main>
-        <FlipBook startPage={3}>
-            <!-- 표지 (가죽 질감) -->
-            <div class="page cover">
-                <div class="page-content">
-                    <span class="subject">High School Mathematics</span>
-                    <h1 class="book-title">공통수학 II</h1>
-                    <div style="width: 60px; height: 2px; background: #e0c9a6; margin: 20px 0;"></div>
-                    <p class="author">Premium Digital Edition</p>
-                </div>
-            </div>
+        <FlipBook startPage={0} showCover={false}>
 
             <!-- 1페이지: 저자 소개 (좌) -->
             <div class="page">

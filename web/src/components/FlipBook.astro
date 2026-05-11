@@ -2,13 +2,14 @@
 // web/src/components/FlipBook.astro
 interface Props {
     startPage?: number;
+    showCover?: boolean;
 }
 
-const { startPage = 0 } = Astro.props;
+const { startPage = 0, showCover = false } = Astro.props;
 ---
 
 <div class="flipbook-wrapper">
-    <div id="book-container" class="book-container" data-start-page={startPage}>
+    <div id="book-container" class="book-container" data-start-page={startPage} data-show-cover={showCover ? 'true' : 'false'}>
         <!-- 페이지들이 이곳에 들어갑니다 -->
         <slot />
     </div>
@@ -165,6 +166,7 @@ const { startPage = 0 } = Astro.props;
         const htmlElement = document.getElementById('book-container');
         if (!htmlElement) return;
 
+        const showCover = htmlElement.dataset.showCover === 'true';
         const startPage = parseInt(htmlElement.dataset.startPage || '0');
 
         const pageFlip = new PageFlip(htmlElement, {
@@ -176,7 +178,7 @@ const { startPage = 0 } = Astro.props;
             minHeight: 420,
             maxHeight: 1350,
             maxShadowOpacity: 0.5,
-            showCover: true,
+            showCover: showCover,
             startPage: startPage,
             mobileScrollSupport: true, // 모바일 스크롤 지원 활성화
             clickEventForward: false, // 클릭 이벤트 전달 비활성화
