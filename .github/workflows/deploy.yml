@@ -20,4 +20,4 @@ jobs:
         uses: withastro/action@v2
         with:
           path: ./web # 소스 코드가 있는 폴더 지정
-          node-version: 20
+          node-version: 22
