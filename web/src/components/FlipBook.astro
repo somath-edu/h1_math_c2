@@ -171,12 +171,12 @@ const { startPage = 0, showCover = false } = Astro.props;
 
         const pageFlip = new PageFlip(htmlElement, {
             width: 600, // 기본 페이지 가로 크기 확대
-            height: 800, // 기본 페이지 세로 크기 확대
+            height: 900, // 기본 페이지 세로 크기 확대 (800 -> 900)
             size: "stretch",
             minWidth: 315,
             maxWidth: 1000,
             minHeight: 420,
-            maxHeight: 1350,
+            maxHeight: 1500, // 최대 높이 상향 조정 (1350 -> 1500)
             maxShadowOpacity: 0.5,
             showCover: showCover,
             startPage: startPage,
