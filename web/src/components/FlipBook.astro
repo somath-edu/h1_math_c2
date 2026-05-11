@@ -58,6 +58,7 @@ const { startPage = 0 } = Astro.props;
     /* 페이지 내부의 은은한 입체 그림자 (책이 접히는 부분) */
     :global(.page-content) {
         height: 100%;
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
         position: relative;
