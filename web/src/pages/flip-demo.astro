@@ -167,7 +167,7 @@ const math = {
                     <span class="chapter">Chapter I. 도형의 방정식</span>
                     <div style="padding-top: 15px;">
                         <div class="concept-box" style="margin: 0; padding: 0; min-height: 380px; overflow: hidden; display: flex; flex-direction: column;">
-                            <!-- 박스 내부 헤더 (중앙 정렬) -->
+                            <!-- 박스 내부 헤더 (사용자 요청: 중앙 정렬) -->
                             <div style="background: #f1ede4; padding: 12px 20px; border-bottom: 1px solid #e8e2d8; flex-shrink: 0; text-align: center;">
                                 <h3 style="margin: 0; font-size: 1.3rem; color: #2c241d;">01. 평면좌표</h3>
                             </div>
@@ -206,26 +206,22 @@ const math = {
                 <div class="page-content">
                     <span class="chapter">Chapter I. 도형의 방정식</span>
                     <div style="padding-top: 15px;">
-                        <div class="concept-box" style="margin: 0; padding: 0; min-height: 380px; overflow: hidden; border-color: #e8e2d8; display: flex; flex-direction: column;">
-                            <!-- 박스 내부 헤더 (CONCEPT 02를 위로 올림) -->
-                            <div style="background: #f1ede4; padding: 12px 20px; border-bottom: 1px solid #e8e2d8; flex-shrink: 0; text-align: center;">
-                                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                                    <span style="background: #8b7355; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">CONCEPT 02</span>
-                                    <h4 style="margin: 0; color: #2c241d; font-size: 1.1rem;">선분의 내분점</h4>
-                                </div>
+                        <div class="concept-box" style="margin: 0; padding: 20px; min-height: 380px; border-color: #e8e2d8;">
+                            <!-- 사용자 요청: 헤더 없이 한 박스에 통합 및 왼쪽 정렬 -->
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                                <span style="background: #8b7355; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">CONCEPT 02</span>
+                                <h4 style="margin: 0; color: #2c241d; font-size: 1.1rem;">선분의 내분점</h4>
                             </div>
-
-                            <div style="padding: 20px; flex-grow: 1;">
-                                <p style="font-size: 0.95rem; color: #666; margin-bottom: 15px;">
-                                    <span set:html={math.internalPt} />
-                                </p>
-                                <div class="formula-highlight" style="padding: 20px; font-size: 1.1rem;">
-                                    <span set:html={math.internalFormula} />
-                                </div>
-                                <div style="margin-top: 20px; display: flex; gap: 10px; align-items: flex-start; background: #fff9f0; padding: 12px; border-radius: 6px;">
-                                    <span style="color: #e67e22; font-weight: bold;">💡</span>
-                                    <small style="color: #a35d14; line-height: 1.4;">외분점의 경우 $n$ 대신 $-n$을 대입한 것과 같이 분모와 분자의 부호가 마이너스가 됩니다.</small>
-                                </div>
+                            
+                            <p style="font-size: 0.95rem; color: #666; margin-bottom: 15px;">
+                                <span set:html={math.internalPt} />
+                            </p>
+                            <div class="formula-highlight" style="padding: 20px; font-size: 1.1rem;">
+                                <span set:html={math.internalFormula} />
+                            </div>
+                            <div style="margin-top: 20px; display: flex; gap: 10px; align-items: flex-start; background: #fff9f0; padding: 12px; border-radius: 6px;">
+                                <span style="color: #e67e22; font-weight: bold;">💡</span>
+                                <small style="color: #a35d14; line-height: 1.4;">외분점의 경우 $n$ 대신 $-n$을 대입한 것과 같이 분모와 분자의 부호가 마이너스가 됩니다.</small>
                             </div>
                         </div>
 
