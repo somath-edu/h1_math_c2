@@ -43,7 +43,7 @@ const { startPage = 0, showCover = false } = Astro.props;
         background-color: #d1c7b7;
         border-radius: 4px;
         position: relative;
-        /* overflow: hidden 제거 - 초기화 전 콘텐츠 숨김 문제 방지 */
+        overflow: hidden; /* 페이지 넘김 시 콘텐츠가 삐져나오는 것 방지 */
     }
 
     /* 각 페이지의 프리미엄 아날로그 스타일 */
@@ -56,6 +56,7 @@ const { startPage = 0, showCover = false } = Astro.props;
         flex-direction: column;
         color: #2c3e50;
         position: relative;
+        overflow: hidden; /* 페이지 내에서 절대 넘치지 않게 설정 */
     }
 
     /* 페이지 내부의 은은한 입체 그림자 (책이 접히는 부분) */
@@ -101,6 +102,14 @@ const { startPage = 0, showCover = false } = Astro.props;
 
     /* 모바일/단면 모드일 때 그림자 및 책등 제거 */
     @media (max-width: 768px) {
+        .flipbook-wrapper {
+            padding: 10px 0;
+            min-height: auto;
+        }
+        .book-container {
+            /* 모바일에서 화면 높이에 맞춰 최대 크기 제한 */
+            max-height: 80vh; 
+        }
         .book-container::after {
             display: none; /* 가운데 바 삭제 */
         }
@@ -175,16 +184,17 @@ const { startPage = 0, showCover = false } = Astro.props;
             width: 600,
             height: 900,
             size: "stretch",
-            minWidth: 200,   // 모바일 소형 화면 대응 (315 → 200)
+            minWidth: 200,
             maxWidth: 1000,
-            minHeight: 300,  // 모바일 소형 화면 대응 (420 → 300)
+            minHeight: 300,
             maxHeight: 1500,
             maxShadowOpacity: 0.5,
             showCover: showCover,
             startPage: startPage,
             mobileScrollSupport: true,
             clickEventForward: false,
-            usePortrait: true,
+            usePortrait: true, // 세로 모드(단면) 자동 전환 활성화
+            autoSize: true,    // 컨테이너 크기에 맞춰 자동 조절
             startVelocity: 10,
             flippingTime: 1000,
             useMouseEvents: false
