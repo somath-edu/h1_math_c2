@@ -33,7 +33,7 @@ const { startPage = 0, showCover = false } = Astro.props;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        padding: 20px 0;
+        padding: clamp(10px, 2vh, 20px) 0; /* 상하 여백 더 축소 */
         width: 100%;
         max-width: 98vw;
         margin: 0 auto;
@@ -56,13 +56,27 @@ const { startPage = 0, showCover = false } = Astro.props;
     :global(.page) {
         background-color: #fefcf0;
         background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-        padding: clamp(20px, 4vw, 48px) clamp(16px, 3.5vw, 44px);
+        /* 모바일에서는 패딩을 최소화하여 콘텐츠 영역 극대화 (12px -> 8px) */
+        padding: clamp(8px, 2.5vw, 48px) clamp(6px, 2vw, 44px);
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
         color: #2c3e50;
         position: relative;
         overflow: hidden;
+        /* 모바일에서 기본 글자 크기 상향 */
+        font-size: 1.05rem; 
+    }
+    @media (max-width: 767px) {
+        :global(.page) {
+            font-size: 1.15rem; /* 모바일에서 글자 크기 더 크게 */
+        }
+        :global(.page-content p) {
+            font-size: 1rem !important;
+        }
+        :global(.formula-highlight) {
+            font-size: 1.2rem !important;
+        }
     }
 
     :global(.page-content) {
@@ -158,8 +172,8 @@ const { startPage = 0, showCover = false } = Astro.props;
         const cw = container.parentElement?.offsetWidth || window.innerWidth;
 
         const config = isMobile ? {
-            width: Math.max(cw - 20, 280),
-            height: Math.round(Math.max(cw - 20, 280) * 1.45),
+            width: Math.max(cw, 280),
+            height: Math.round(Math.max(cw, 280) * 1.5),
             size: "fixed" as const,
             usePortrait: true,
             autoSize: false,
