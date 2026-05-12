@@ -166,27 +166,23 @@ const math = {
                 <div class="page-content">
                     <span class="chapter">Chapter I. 도형의 방정식</span>
                     <div style="padding-top: 15px;">
-                        <div class="concept-box" style="margin: 0; padding: 0; min-height: 380px; overflow: hidden; display: flex; flex-direction: column;">
-                            <!-- 박스 내부 헤더 (사용자 요청: 중앙 정렬) -->
-                            <div style="background: #f1ede4; padding: 12px 20px; border-bottom: 1px solid #e8e2d8; flex-shrink: 0; text-align: center;">
-                                <h3 style="margin: 0; font-size: 1.3rem; color: #2c241d;">01. 평면좌표</h3>
-                            </div>
+                        <div class="concept-box" style="margin: 0; padding: 20px; min-height: 380px; border-color: #e8e2d8;">
+                            <!-- 01. 평면좌표 제목을 박스 안쪽 상단 중앙에 배치 -->
+                            <h3 style="margin: 0 0 20px 0; font-size: 1.5rem; color: #2c241d; text-align: center;">01. 평면좌표</h3>
                             
-                            <div style="padding: 20px; flex-grow: 1;">
-                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                                    <span style="background: #8b7355; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">CONCEPT 01</span>
-                                    <h4 style="margin: 0; color: #2c241d; font-size: 1.1rem;">두 점 사이의 거리</h4>
-                                </div>
-                                <p style="font-size: 0.95rem; line-height: 1.5; color: #4a3f35; margin-bottom: 12px;">
-                                    좌표평면 위의 두 점 <span set:html={math.dist2pts} />
-                                </p>
-                                <div class="formula-highlight" style="margin: 12px 0; padding: 15px; font-size: 1.15rem;">
-                                    <span set:html={math.distFormula} />
-                                </div>
-                                <div style="background: #f9f7f2; padding: 12px; border-radius: 6px; border-left: 3px solid #d1c7b7; margin-top: 5px;">
-                                    <small style="color: #8b7355; font-weight: bold; display: block; margin-bottom: 4px;">[참고] 원점과의 거리</small>
-                                    <p style="margin: 0; font-size: 0.9rem;"><span set:html={math.originDist} /></p>
-                                </div>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                                <span style="background: #8b7355; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">CONCEPT 01</span>
+                                <h4 style="margin: 0; color: #2c241d; font-size: 1.1rem;">두 점 사이의 거리</h4>
+                            </div>
+                            <p style="font-size: 0.95rem; line-height: 1.5; color: #4a3f35; margin-bottom: 12px;">
+                                좌표평면 위의 두 점 <span set:html={math.dist2pts} />
+                            </p>
+                            <div class="formula-highlight" style="margin: 12px 0; padding: 15px; font-size: 1.15rem;">
+                                <span set:html={math.distFormula} />
+                            </div>
+                            <div style="background: #f9f7f2; padding: 12px; border-radius: 6px; border-left: 3px solid #d1c7b7; margin-top: 5px;">
+                                <small style="color: #8b7355; font-weight: bold; display: block; margin-bottom: 4px;">[참고] 원점과의 거리</small>
+                                <p style="margin: 0; font-size: 0.9rem;"><span set:html={math.originDist} /></p>
                             </div>
                         </div>
 
@@ -207,7 +203,7 @@ const math = {
                     <span class="chapter">Chapter I. 도형의 방정식</span>
                     <div style="padding-top: 15px;">
                         <div class="concept-box" style="margin: 0; padding: 20px; min-height: 380px; border-color: #e8e2d8;">
-                            <!-- 사용자 요청: 헤더 없이 한 박스에 통합 및 왼쪽 정렬 -->
+                            <!-- 8페이지 구도 유지 (헤더 없이 통합) -->
                             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
                                 <span style="background: #8b7355; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">CONCEPT 02</span>
                                 <h4 style="margin: 0; color: #2c241d; font-size: 1.1rem;">선분의 내분점</h4>
