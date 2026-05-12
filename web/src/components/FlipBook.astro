@@ -173,91 +173,126 @@ const { startPage = 0, showCover = false } = Astro.props;
 <script>
     import { PageFlip } from 'page-flip';
 
-    function initFlipBook() {
+    let flipBookInstance: any = null;
+    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
+
+    function destroyFlipBook() {
+        if (flipBookInstance) {
+            try { flipBookInstance.destroy(); } catch(e) {}
+            flipBookInstance = null;
+        }
+    }
+
+    function createFlipBook() {
         const htmlElement = document.getElementById('book-container');
         if (!htmlElement) return;
+
+        // 이미 초기화된 인스턴스 제거
+        destroyFlipBook();
 
         const showCover = htmlElement.dataset.showCover === 'true';
         const startPage = parseInt(htmlElement.dataset.startPage || '0');
 
-        const pageFlip = new PageFlip(htmlElement, {
-            width: 600,
-            height: 900,
-            size: "stretch",
-            minWidth: 200,
-            maxWidth: 1000,
-            minHeight: 300,
-            maxHeight: 1500,
-            maxShadowOpacity: 0.5,
-            showCover: showCover,
-            startPage: startPage,
-            mobileScrollSupport: true,
-            clickEventForward: false,
-            usePortrait: true, // 세로 모드(단면) 자동 전환 활성화
-            autoSize: true,    // 컨테이너 크기에 맞춰 자동 조절
-            startVelocity: 10,
-            flippingTime: 1000,
-            useMouseEvents: false
-        });
+        // 레이아웃 완성 후 측정하도록 rAF 사용
+        requestAnimationFrame(() => {
+            const containerWidth = htmlElement.offsetWidth;
 
-        // 페이지 데이터 로드
-        const pages = document.querySelectorAll('.page');
-        if (pages.length > 0) {
-            pageFlip.loadFromHTML(document.querySelectorAll('.page'));
-            
-            // 수학 기호(KaTeX) 수동 재렌더링 강제 실행
-            if ((window as any).renderMathInElement) {
-                (window as any).renderMathInElement(document.body, {
-                    delimiters: [
-                        {left: '$$', right: '$$', display: true},
-                        {left: '$', right: '$', display: false}
-                    ],
-                    throwOnError: false
-                });
-            }
-            
-            // 시작 페이지로 강제 이동 (Index 기반이므로 확실히 처리)
-            if (startPage > 0) {
-                pageFlip.turnToPage(startPage);
-            }
-        }
+            // 좁은 화면에서는 width를 줄여서 portrait 전환이 확실히 되도록 함
+            const pageWidth = containerWidth < 600 ? Math.max(containerWidth - 10, 200) : 600;
 
-        // 페이지 정보 업데이트
-        const updatePageInfo = () => {
-            const pageInfo = document.getElementById('page-info');
-            if (pageInfo) {
-                // 실제 인덱스가 아닌 사용자에게 보이는 페이지 번호로 계산
-                pageInfo.innerText = `${pageFlip.getCurrentPageIndex() + 1} / ${pageFlip.getPageCount()}`;
-            }
-        };
+            flipBookInstance = new PageFlip(htmlElement, {
+                width: pageWidth,
+                height: Math.round(pageWidth * 1.5), // 2:3 비율 유지
+                size: "fixed",          // fixed 모드: 명시적 크기로 portrait 전환 안정화
+                minWidth: 200,
+                maxWidth: 1000,
+                minHeight: 300,
+                maxHeight: 1500,
+                maxShadowOpacity: 0.5,
+                showCover: showCover,
+                startPage: startPage,
+                mobileScrollSupport: true,
+                clickEventForward: false,
+                usePortrait: true,
+                autoSize: false,
+                startVelocity: 10,
+                flippingTime: 800,
+                useMouseEvents: false
+            });
 
-        // 이벤트 리스너
-        pageFlip.on('flip', (e: any) => {
+            const pages = document.querySelectorAll('.page');
+            if (pages.length > 0) {
+                flipBookInstance.loadFromHTML(pages);
+
+                if ((window as any).renderMathInElement) {
+                    (window as any).renderMathInElement(document.body, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false}
+                        ],
+                        throwOnError: false
+                    });
+                }
+
+                if (startPage > 0) {
+                    flipBookInstance.turnToPage(startPage);
+                }
+            }
+
+            const updatePageInfo = () => {
+                const pageInfo = document.getElementById('page-info');
+                if (pageInfo && flipBookInstance) {
+                    pageInfo.innerText = `${flipBookInstance.getCurrentPageIndex() + 1} / ${flipBookInstance.getPageCount()}`;
+                }
+            };
+
+            flipBookInstance.on('flip', () => updatePageInfo());
             updatePageInfo();
-        });
 
-        document.getElementById('prev-btn')?.addEventListener('click', () => {
-            pageFlip.flipPrev();
-        });
-
-        document.getElementById('next-btn')?.addEventListener('click', () => {
-            pageFlip.flipNext();
-        });
-
-        // 목차 클릭 리스너
-        document.addEventListener('click', (e) => {
-            const target = (e.target as HTMLElement).closest('[data-page]');
-            if (target) {
-                const pageIndex = parseInt(target.getAttribute('data-page') || '');
-                if (!isNaN(pageIndex)) pageFlip.flip(pageIndex);
+            // 이전 버튼/다음 버튼 (중복 등록 방지를 위해 클론으로 교체)
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            if (prevBtn) {
+                const newPrev = prevBtn.cloneNode(true) as HTMLElement;
+                prevBtn.parentNode?.replaceChild(newPrev, prevBtn);
+                newPrev.addEventListener('click', () => flipBookInstance?.flipPrev());
+            }
+            if (nextBtn) {
+                const newNext = nextBtn.cloneNode(true) as HTMLElement;
+                nextBtn.parentNode?.replaceChild(newNext, nextBtn);
+                newNext.addEventListener('click', () => flipBookInstance?.flipNext());
             }
         });
-
-        updatePageInfo();
     }
 
-    // Astro 페이지 로드 시 실행
-    document.addEventListener('astro:page-load', initFlipBook);
-    // 초기 로드 시 실행 (View Transitions 미사용 시 대비)
-    initFlipBook();
+    function initFlipBook() {
+        createFlipBook();
+
+        // 창 크기 변경 시 다시 초기화 (디바운스 300ms)
+        window.removeEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize);
+    }
+
+    function handleResize() {
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            createFlipBook();
+        }, 300);
+    }
+
+    // 목차 클릭 (전역 등록은 한 번만)
+    document.addEventListener('click', (e) => {
+        const target = (e.target as HTMLElement).closest('[data-page]');
+        if (target && flipBookInstance) {
+            const pageIndex = parseInt(target.getAttribute('data-page') || '');
+            if (!isNaN(pageIndex)) flipBookInstance.flip(pageIndex);
+        }
+    });
+
+    // 단 한 번만 실행되도록 guard
+    if (!(window as any).__flipBookReady) {
+        (window as any).__flipBookReady = true;
+        document.addEventListener('astro:page-load', initFlipBook);
+        initFlipBook();
+    }
 </script>
