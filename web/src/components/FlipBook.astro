@@ -26,12 +26,14 @@ const { startPage = 0, showCover = false } = Astro.props;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         padding: 20px 0;
         width: 100%;
-        max-width: 95vw; /* 화면 너비의 95%까지 활용 */
+        max-width: 95vw;
         margin: 0 auto;
         perspective: 2000px;
+        /* 모바일에서 최소 높이 확보 */
+        min-height: 60vh;
     }
 
     .book-container {
@@ -41,7 +43,7 @@ const { startPage = 0, showCover = false } = Astro.props;
         background-color: #d1c7b7;
         border-radius: 4px;
         position: relative;
-        overflow: hidden; /* 영역 밖으로 나가는 것 방지 */
+        /* overflow: hidden 제거 - 초기화 전 콘텐츠 숨김 문제 방지 */
     }
 
     /* 각 페이지의 프리미엄 아날로그 스타일 */
@@ -170,22 +172,22 @@ const { startPage = 0, showCover = false } = Astro.props;
         const startPage = parseInt(htmlElement.dataset.startPage || '0');
 
         const pageFlip = new PageFlip(htmlElement, {
-            width: 600, // 기본 페이지 가로 크기 확대
-            height: 900, // 기본 페이지 세로 크기 확대 (800 -> 900)
+            width: 600,
+            height: 900,
             size: "stretch",
-            minWidth: 315,
+            minWidth: 200,   // 모바일 소형 화면 대응 (315 → 200)
             maxWidth: 1000,
-            minHeight: 420,
-            maxHeight: 1500, // 최대 높이 상향 조정 (1350 -> 1500)
+            minHeight: 300,  // 모바일 소형 화면 대응 (420 → 300)
+            maxHeight: 1500,
             maxShadowOpacity: 0.5,
             showCover: showCover,
             startPage: startPage,
-            mobileScrollSupport: true, // 모바일 스크롤 지원 활성화
-            clickEventForward: false, // 클릭 이벤트 전달 비활성화
-            usePortrait: true, // 모바일에서 단면 보기 자동 전환 활성화
+            mobileScrollSupport: true,
+            clickEventForward: false,
+            usePortrait: true,
             startVelocity: 10,
             flippingTime: 1000,
-            useMouseEvents: false // 마우스 이벤트 비활성화
+            useMouseEvents: false
         });
 
         // 페이지 데이터 로드
