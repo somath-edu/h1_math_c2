@@ -163,36 +163,34 @@ const math = {
 
             <!-- 7페이지: 두 점 사이의 거리 -->
             <div class="page">
-                <div class="page-content" style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="page-content">
                     <span class="chapter">Chapter I. 도형의 방정식</span>
-                    
-                    <div class="concept-box" style="margin: 10px 0; padding: 15px 20px; flex-shrink: 0;">
-                        <h3 style="margin: 0 0 15px 0; font-size: 1.5rem; color: #2c241d;">01. 평면좌표</h3>
-                        
-                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                            <span style="background: #8b7355; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">CONCEPT 01</span>
-                            <h4 style="margin: 0; color: #2c241d; font-size: 1.1rem;">두 점 사이의 거리</h4>
+                    <div style="display: flex; flex-direction: column; justify-content: center; flex-grow: 1;">
+                        <div class="concept-box" style="margin: 10px 0; padding: 15px 20px; flex-shrink: 0;">
+                            <h3 style="margin: 0 0 15px 0; font-size: 1.5rem; color: #2c241d;">01. 평면좌표</h3>
+                            
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <span style="background: #8b7355; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">CONCEPT 01</span>
+                                <h4 style="margin: 0; color: #2c241d; font-size: 1.1rem;">두 점 사이의 거리</h4>
+                            </div>
+                            <p style="font-size: 0.95rem; line-height: 1.5; color: #4a3f35; margin-bottom: 10px;">
+                                좌표평면 위의 두 점 <span set:html={math.dist2pts} />
+                            </p>
+                            <div class="formula-highlight" style="margin: 10px 0; padding: 12px; font-size: 1.1rem;">
+                                <span set:html={math.distFormula} />
+                            </div>
+                            <div style="background: #f9f7f2; padding: 10px; border-radius: 6px; border-left: 3px solid #d1c7b7; margin-top: 5px;">
+                                <small style="color: #8b7355; font-weight: bold; display: block; margin-bottom: 2px;">[참고] 원점과의 거리</small>
+                                <p style="margin: 0; font-size: 0.85rem;"><span set:html={math.originDist} /></p>
+                            </div>
                         </div>
-                        <p style="font-size: 0.95rem; line-height: 1.5; color: #4a3f35; margin-bottom: 10px;">
-                            좌표평면 위의 두 점 <span set:html={math.dist2pts} />
-                        </p>
-                        <div class="formula-highlight" style="margin: 10px 0; padding: 12px; font-size: 1.1rem;">
-                            <span set:html={math.distFormula} />
-                        </div>
-                        <div style="background: #f9f7f2; padding: 10px; border-radius: 6px; border-left: 3px solid #d1c7b7; margin-top: 5px;">
-                            <small style="color: #8b7355; font-weight: bold; display: block; margin-bottom: 2px;">[참고] 원점과의 거리</small>
-                            <p style="margin: 0; font-size: 0.85rem;"><span set:html={math.originDist} /></p>
-                        </div>
-                    </div>
 
-                    <!-- 애니메이션 영상: 16:9 비율로 너비 꽉 채움 -->
-                    <div class="video-container" style="margin-top: 15px; width: 100%; background: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 1px solid #e8e2d8; aspect-ratio: 16/9;">
-                        <video 
-                            controls 
-                            style="width: 100%; height: 100%; display: block; object-fit: contain;"
-                        >
-                            <source src="/h1_math_c2/assets/videos/1.DistanceAnimation.mp4" type="video/mp4">
-                        </video>
+                        <!-- 애니메이션 영상 -->
+                        <div class="video-container" style="margin-top: 15px; width: 100%; background: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 1px solid #e8e2d8; aspect-ratio: 16/9;">
+                            <video controls style="width: 100%; height: 100%; display: block; object-fit: contain;">
+                                <source src="/h1_math_c2/assets/videos/1.DistanceAnimation.mp4" type="video/mp4">
+                            </video>
+                        </div>
                     </div>
                 </div>
                 <span class="page-number">7</span>
@@ -200,25 +198,24 @@ const math = {
 
             <!-- 8페이지: 선분의 내분점과 외분점 -->
             <div class="page">
-                <div class="page-content" style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="page-content">
                     <span class="chapter">Chapter I. 도형의 방정식</span>
-                    
-                    <div class="concept-box" style="border-color: #e8e2d8; margin-top: 10px;">
-                        <h3 style="margin: 0 0 20px 0; font-size: 1.5rem; color: #2c241d;">01. 평면좌표</h3>
-                        
-                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                            <span style="background: #8b7355; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">CONCEPT 02</span>
-                            <h4 style="margin: 0; color: #2c241d;">선분의 내분점</h4>
-                        </div>
-                        <p style="font-size: 0.95rem; color: #666; margin-bottom: 15px;">
-                            <span set:html={math.internalPt} />
-                        </p>
-                        <div class="formula-highlight" style="padding: 20px; font-size: 1.1rem;">
-                            <span set:html={math.internalFormula} />
-                        </div>
-                        <div style="margin-top: 20px; display: flex; gap: 10px; align-items: flex-start; background: #fff9f0; padding: 12px; border-radius: 6px;">
-                            <span style="color: #e67e22; font-weight: bold;">💡</span>
-                            <small style="color: #a35d14; line-height: 1.4;">외분점의 경우 $n$ 대신 $-n$을 대입한 것과 같이 분모와 분자의 부호가 마이너스가 됩니다.</small>
+                    <div style="display: flex; flex-direction: column; justify-content: center; flex-grow: 1;">
+                        <div class="concept-box" style="border-color: #e8e2d8; margin-top: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                                <span style="background: #8b7355; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">CONCEPT 02</span>
+                                <h4 style="margin: 0; color: #2c241d; font-size: 1.1rem;">선분의 내분점</h4>
+                            </div>
+                            <p style="font-size: 0.95rem; color: #666; margin-bottom: 15px;">
+                                <span set:html={math.internalPt} />
+                            </p>
+                            <div class="formula-highlight" style="padding: 20px; font-size: 1.1rem;">
+                                <span set:html={math.internalFormula} />
+                            </div>
+                            <div style="margin-top: 20px; display: flex; gap: 10px; align-items: flex-start; background: #fff9f0; padding: 12px; border-radius: 6px;">
+                                <span style="color: #e67e22; font-weight: bold;">💡</span>
+                                <small style="color: #a35d14; line-height: 1.4;">외분점의 경우 $n$ 대신 $-n$을 대입한 것과 같이 분모와 분자의 부호가 마이너스가 됩니다.</small>
+                            </div>
                         </div>
                     </div>
                 </div>
