@@ -204,7 +204,7 @@ const math = {
             <!-- 8페이지: 선분의 내분점과 외분점 -->
             <div class="page">
                 <div class="page-content">
-                    <span class="chapter">Chapter I. 도형의 방정식</span>
+                    <span class="chapter right">Chapter I. 도형의 방정식</span>
                     <div style="padding-top: 15px;">
                         <div class="concept-box" style="margin: 0; padding: 0; min-height: 380px; overflow: hidden; border-color: #e8e2d8; display: flex; flex-direction: column;">
                             <!-- 좌측과 높이를 맞추기 위한 동일한 높이의 빈 헤더 영역 -->
@@ -374,11 +374,16 @@ const math = {
     .chapter { 
         color: #8b7355; 
         font-weight: 700; 
-        font-size: 0.75rem; 
+        font-size: 0.85rem; /* 조금 더 선명하게 상향 */
         letter-spacing: 1px;
         display: block;
-        margin-bottom: 5px;
+        width: 100%;
+        margin-bottom: 15px; /* 모든 페이지 여백 통일 */
         opacity: 0.8;
+    }
+
+    .chapter.right {
+        text-align: right;
     }
 
     .concept-box {
