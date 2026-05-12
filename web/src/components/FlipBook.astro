@@ -32,8 +32,6 @@ const { startPage = 0, showCover = false } = Astro.props;
         max-width: 95vw;
         margin: 0 auto;
         perspective: 2000px;
-        /* 모바일에서 최소 높이 확보 */
-        min-height: 60vh;
     }
 
     .book-container {
@@ -43,23 +41,22 @@ const { startPage = 0, showCover = false } = Astro.props;
         background-color: #d1c7b7;
         border-radius: 4px;
         position: relative;
-        overflow: hidden; /* 페이지 넘김 시 콘텐츠가 삐져나오는 것 방지 */
+        overflow: hidden;
     }
 
     /* 각 페이지의 프리미엄 아날로그 스타일 */
     :global(.page) {
-        background-color: #fefcf0; /* 따뜻한 미색 종이 */
-        background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png'); /* 미세 종이 질감 */
+        background-color: #fefcf0;
+        background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
         padding: clamp(25px, 5vw, 50px) clamp(20px, 4vw, 45px);
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
         color: #2c3e50;
         position: relative;
-        overflow: hidden; /* 페이지 내에서 절대 넘치지 않게 설정 */
+        overflow: hidden;
     }
 
-    /* 페이지 내부의 은은한 입체 그림자 (책이 접히는 부분) */
     :global(.page-content) {
         height: 100%;
         box-sizing: border-box;
@@ -67,22 +64,22 @@ const { startPage = 0, showCover = false } = Astro.props;
         flex-direction: column;
         position: relative;
         z-index: 2;
-        padding-bottom: 60px; /* 더 넓은 안전 공간 확보 (60px) */
+        padding-bottom: 60px;
     }
 
-    /* 왼쪽 페이지 그림자 (오른쪽이 어두움) */
+    /* 왼쪽 페이지 그림자 */
     :global(.page.--left) {
         border-right: 1px solid rgba(0,0,0,0.1);
         box-shadow: inset -20px 0 30px rgba(0,0,0,0.03);
     }
 
-    /* 오른쪽 페이지 그림자 (왼쪽이 어두움) */
+    /* 오른쪽 페이지 그림자 */
     :global(.page.--right) {
         border-left: 1px solid rgba(0,0,0,0.1);
         box-shadow: inset 20px 0 30px rgba(0,0,0,0.03);
     }
 
-    /* 가운데 책등(Spine) 효과: 펼침 모드에서만 표시 */
+    /* 가운데 책등(Spine) 효과 */
     .book-container::after {
         content: "";
         position: absolute;
@@ -100,21 +97,16 @@ const { startPage = 0, showCover = false } = Astro.props;
         pointer-events: none;
     }
 
-    /* 모바일/단면 모드일 때 그림자 및 책등 제거 */
+    /* 모바일: 책등 제거 */
     @media (max-width: 768px) {
         .flipbook-wrapper {
             padding: 10px 0;
-            min-height: auto;
-        }
-        .book-container {
-            /* 모바일에서 화면 높이에 맞춰 최대 크기 제한 */
-            max-height: 80vh; 
         }
         .book-container::after {
-            display: none; /* 가운데 바 삭제 */
+            display: none;
         }
         :global(.page.--left), :global(.page.--right) {
-            box-shadow: none !important; /* 안쪽 그림자 삭제 */
+            box-shadow: none !important;
             border: none !important;
         }
     }
@@ -173,149 +165,75 @@ const { startPage = 0, showCover = false } = Astro.props;
 <script>
     import { PageFlip } from 'page-flip';
 
-    let flipBookInstance: any = null;
-    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
-
-    function destroyFlipBook() {
-        if (flipBookInstance) {
-            try { flipBookInstance.destroy(); } catch(e) {}
-            flipBookInstance = null;
-        }
-    }
-
-    function createFlipBook() {
+    function initFlipBook() {
         const htmlElement = document.getElementById('book-container');
         if (!htmlElement) return;
 
-        destroyFlipBook();
-
         const showCover = htmlElement.dataset.showCover === 'true';
         const startPage = parseInt(htmlElement.dataset.startPage || '0');
-        const isMobile = window.innerWidth < 768;
 
+        // 레이아웃이 완성된 후 컨테이너 크기를 측정하기 위해 rAF 사용
         requestAnimationFrame(() => {
-            if (isMobile) {
-                // ── 모바일: 한 페이지 (portrait) ──
-                const w = Math.max(htmlElement.offsetWidth - 10, 200);
-                const h = Math.round(w * 1.5);
-
-                flipBookInstance = new PageFlip(htmlElement, {
-                    width: w,
-                    height: h,
-                    size: "fixed",
-                    minWidth: 200,
-                    maxWidth: 600,
-                    minHeight: 300,
-                    maxHeight: 900,
-                    maxShadowOpacity: 0.3,
-                    showCover: showCover,
-                    startPage: startPage,
-                    mobileScrollSupport: true,
-                    clickEventForward: false,
-                    usePortrait: true,   // 항상 단면
-                    autoSize: false,
-                    startVelocity: 10,
-                    flippingTime: 800,
-                    useMouseEvents: false
-                });
-            } else {
-                // ── PC: 두 페이지 (landscape) ──
-                flipBookInstance = new PageFlip(htmlElement, {
-                    width: 600,
-                    height: 900,
-                    size: "stretch",
-                    minWidth: 315,
-                    maxWidth: 1000,
-                    minHeight: 420,
-                    maxHeight: 1500,
-                    maxShadowOpacity: 0.5,
-                    showCover: showCover,
-                    startPage: startPage,
-                    mobileScrollSupport: false,
-                    clickEventForward: false,
-                    usePortrait: false,  // 항상 양면
-                    autoSize: true,
-                    startVelocity: 10,
-                    flippingTime: 1000,
-                    useMouseEvents: true
-                });
-            }
+            const pageFlip = new PageFlip(htmlElement, {
+                width: 600,         // portrait 자동 전환 기준: container < 600px → 단면
+                height: 900,
+                size: "stretch",    // 컨테이너에 맞게 자동 조절
+                minWidth: 200,
+                maxWidth: 1000,
+                minHeight: 300,
+                maxHeight: 1500,
+                maxShadowOpacity: 0.5,
+                showCover: showCover,
+                startPage: startPage,
+                mobileScrollSupport: true,
+                clickEventForward: false,
+                usePortrait: true,  // 화면이 좁으면 자동으로 단면 전환
+                useMouseEvents: true,
+                startVelocity: 10,
+                flippingTime: 1000,
+            });
 
             const pages = document.querySelectorAll('.page');
             if (pages.length > 0) {
-                flipBookInstance.loadFromHTML(pages);
+                pageFlip.loadFromHTML(pages);
 
                 if ((window as any).renderMathInElement) {
                     (window as any).renderMathInElement(document.body, {
                         delimiters: [
-                            {left: '$$', right: '$$', display: true},
-                            {left: '$', right: '$', display: false}
+                            { left: '$$', right: '$$', display: true },
+                            { left: '$', right: '$', display: false }
                         ],
                         throwOnError: false
                     });
                 }
 
-                if (startPage > 0) flipBookInstance.turnToPage(startPage);
+                if (startPage > 0) pageFlip.turnToPage(startPage);
             }
 
             const updatePageInfo = () => {
-                const pageInfo = document.getElementById('page-info');
-                if (pageInfo && flipBookInstance) {
-                    pageInfo.innerText = `${flipBookInstance.getCurrentPageIndex() + 1} / ${flipBookInstance.getPageCount()}`;
-                }
+                const el = document.getElementById('page-info');
+                if (el) el.innerText = `${pageFlip.getCurrentPageIndex() + 1} / ${pageFlip.getPageCount()}`;
             };
 
-            flipBookInstance.on('flip', () => updatePageInfo());
+            pageFlip.on('flip', () => updatePageInfo());
             updatePageInfo();
 
-            // 버튼 중복 등록 방지: 클론으로 교체
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            if (prevBtn) {
-                const np = prevBtn.cloneNode(true) as HTMLElement;
-                prevBtn.parentNode?.replaceChild(np, prevBtn);
-                np.addEventListener('click', () => flipBookInstance?.flipPrev());
-            }
-            if (nextBtn) {
-                const nn = nextBtn.cloneNode(true) as HTMLElement;
-                nextBtn.parentNode?.replaceChild(nn, nextBtn);
-                nn.addEventListener('click', () => flipBookInstance?.flipNext());
-            }
+            document.getElementById('prev-btn')?.addEventListener('click', () => pageFlip.flipPrev());
+            document.getElementById('next-btn')?.addEventListener('click', () => pageFlip.flipNext());
+
+            document.addEventListener('click', (e) => {
+                const target = (e.target as HTMLElement).closest('[data-page]');
+                if (target) {
+                    const idx = parseInt(target.getAttribute('data-page') || '');
+                    if (!isNaN(idx)) pageFlip.flip(idx);
+                }
+            });
         });
     }
 
-    function initFlipBook() {
-        createFlipBook();
-
-        window.removeEventListener('resize', handleResize);
-        window.addEventListener('resize', handleResize);
-    }
-
-    let _lastIsMobile = window.innerWidth < 768;
-    function handleResize() {
-        if (resizeTimer) clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            const nowMobile = window.innerWidth < 768;
-            // PC↔모바일 경계를 넘을 때만 재초기화
-            if (nowMobile !== _lastIsMobile) {
-                _lastIsMobile = nowMobile;
-                createFlipBook();
-            }
-        }, 300);
-    }
-
-    // 목차 클릭 (전역 등록은 한 번만)
-    document.addEventListener('click', (e) => {
-        const target = (e.target as HTMLElement).closest('[data-page]');
-        if (target && flipBookInstance) {
-            const pageIndex = parseInt(target.getAttribute('data-page') || '');
-            if (!isNaN(pageIndex)) flipBookInstance.flip(pageIndex);
-        }
-    });
-
-    // 단 한 번만 실행되도록 guard
-    if (!(window as any).__flipBookReady) {
-        (window as any).__flipBookReady = true;
+    // 이중 초기화 방지 guard
+    if (!(window as any).__flipBookInit) {
+        (window as any).__flipBookInit = true;
         document.addEventListener('astro:page-load', initFlipBook);
         initFlipBook();
     }
